@@ -1,0 +1,58 @@
+version: "3.5"
+services:
+
+    otrs-db:
+        image: postgres:10.2-alpine
+        volumes:
+            - otrs-db:/var/lib/postgresql/data
+        networks:
+            - otrs-backend
+        environment:
+            POSTGRES_PASSWORD_FILE: pgpassword.txt
+
+    otrs-fcgi:
+        image: snw35/otrs-fcgi:${OTRS_VERSION:-6.0.6}
+        volumes:
+            - otrs-config:/data
+            - otrs-dir:/opt/otrs
+        ports:
+            - 9000
+        networks:
+            - otrs-backend
+        depends_on:
+            - otrs-db
+
+    otrs-nginx:
+        image: snw35/otrs-nginx:1.13.8-alpine
+        volumes:
+            - otrs-config:/data
+            - otrs-dir:/opt/otrs
+        ports:
+            - 80:80
+        networks:
+            - otrs-backend
+        depends_on:
+            - otrs-fcgi
+
+    otrs-daemon:
+        image: snw35/otrs-daemon:6.x
+        volumes:
+            - otrs-config:/data
+            - otrs-dir:/opt/otrs
+        networks:
+            - otrs-backend
+        depends_on:
+            - otrs-db
+            - otrs-fcgi
+
+volumes:
+    otrs-db:
+        external:
+            name: otrs-db
+    otrs-config:
+        external:
+            name: otrs-config
+    otrs-dir:
+
+networks:
+    otrs-backend:
