@@ -1,0 +1,68 @@
+version: "3.5"
+services:
+
+    otrs-db:
+        image: mariadb:10.3.5
+        volumes:
+            - otrs-db:/var/lib/mysql
+        networks:
+            - otrs-backend
+        environment:
+            MYSQL_ROOT_PASSWORD_FILE: dbpassword.txt
+        restart: unless-stopped
+
+    otrs-fcgi:
+        image: snw35/otrs-fcgi:1.1-${OTRS_VERSION:-6.0.6}
+        volumes:
+            - type: volume
+              source: otrs-config
+              target: /data
+            - type: volume
+              source: otrs-dir
+              target: /opt/otrs
+            - type: tmpfs
+              target: /tmp
+        ports:
+            - 9000
+        networks:
+            - otrs-backend
+        depends_on:
+            - otrs-db
+        restart: unless-stopped
+
+    otrs-nginx:
+        image: snw35/otrs-nginx:1.13.8-alpine
+        volumes:
+            - otrs-config:/data
+            - otrs-dir:/opt/otrs
+        ports:
+            - 80:80
+        networks:
+            - otrs-backend
+        depends_on:
+            - otrs-fcgi
+        restart: unless-stopped
+
+    otrs-daemon:
+        image: snw35/otrs-daemon:6.x
+        volumes:
+            - otrs-config:/data
+            - otrs-dir:/opt/otrs
+        networks:
+            - otrs-backend
+        depends_on:
+            - otrs-db
+            - otrs-fcgi
+        restart: unless-stopped
+
+volumes:
+    otrs-db:
+        external:
+            name: otrs-db
+    otrs-config:
+        external:
+            name: otrs-config
+    otrs-dir:
+
+networks:
+    otrs-backend:
