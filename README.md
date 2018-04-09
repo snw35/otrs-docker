@@ -3,10 +3,9 @@ Docker compose files for lightweight and efficient OTRS 6.
 
 This repository contains the docker-compose files that will automate the deployment of my Alpine-based OTRS container images:
 
- * [otrs-fcgi](https://github.com/snw35/otrs-fcgi)
- * [otrs-httpd](https://github.com/snw35/otrs-httpd)
- * [otrs-daemon](https://github.com/snw35/otrs-daemon)
- * [otrs-nginx](https://github.com/snw35/otrs-nginx)
+ * [otrs-fcgi - ](https://github.com/snw35/otrs-fcgi) [![Build Status](https://travis-ci.org/snw35/otrs-fcgi.svg?branch=master)](https://travis-ci.org/snw35/otrs-fcgi)
+ * [otrs-daemon -](https://github.com/snw35/otrs-daemon) [![Build Status](https://travis-ci.org/snw35/otrs-daemon.svg?branch=master)](https://travis-ci.org/snw35/otrs-daemon)
+ * [otrs-nginx - ](https://github.com/snw35/otrs-nginx) [![Build Status](https://travis-ci.org/snw35/otrs-nginx.svg?branch=master)](https://travis-ci.org/snw35/otrs-nginx)
 
 These images follow the [official docker library image guidelines](https://github.com/docker-library/official-images) as closely as possible. They are designed with maintainability, simplicity, and security in mind.
 
