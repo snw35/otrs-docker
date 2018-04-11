@@ -12,7 +12,7 @@ services:
         restart: unless-stopped
 
     otrs-fcgi:
-        image: snw35/otrs-fcgi:1.1-${OTRS_VERSION:-6.0.6}
+        image: snw35/otrs-fcgi:latest
         volumes:
             - type: volume
               source: otrs-config
@@ -31,7 +31,7 @@ services:
         restart: unless-stopped
 
     otrs-nginx:
-        image: snw35/otrs-nginx:1.13.8-alpine
+        image: snw35/otrs-nginx:latest
         volumes:
             - otrs-config:/data
             - otrs-dir:/opt/otrs
@@ -44,7 +44,7 @@ services:
         restart: unless-stopped
 
     otrs-daemon:
-        image: snw35/otrs-daemon:6.x
+        image: snw35/otrs-daemon:latest
         volumes:
             - otrs-config:/data
             - otrs-dir:/opt/otrs
