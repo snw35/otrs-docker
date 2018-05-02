@@ -19,21 +19,25 @@ There are two docker-compose files available:
 
  1. Install docker and docker-compose if needed.
  1. Create required volumes:
-```
-docker volume create otrs-db
-docker volume create otrs-config
-```
+
+    ```
+    docker volume create otrs-db
+    docker volume create otrs-config
+    ```
+
  1. Create a file called dbpassword.txt and place a database password of your choosing inside.
  1. Download the appropriate docker-compose.yml file into the same directory.
  1. Start OTRS:
- ```
- docker-compose up -d
-```
+
+    ```
+    docker-compose up -d
+    ```
+
  1. Navigate to http://localhost/otrs/installer.pl
 
  1. Proceed through the installation. For database settings, use 'otrs-db' as host, 'postgres' as user if using posgres or 'root' if using mariadb, and the password you placed in the file.
 
-NOTE: The warning banner stating that the OTRS daemon is not running may persist the first time you bring the environment up due to the daemon attempting to start before the database exists. If this happens, simply go through the installation, then restart the environment with "docker-compose down" and "docker-compose up -d". The warning should disappear after 5 minutes.
+    NOTE: The warning banner stating that the OTRS daemon is not running may persist the first time you bring the environment up due to the daemon attempting to start before the database exists. If this happens, simply go through the installation, then restart the environment with "docker-compose down" and "docker-compose up -d". The warning should disappear after 5 minutes.
 
 ## Considerations for production use
 
@@ -50,11 +54,13 @@ There are two custom skins pre-configured: one for the Agent interface, and one 
 
  1. Create your skin and make sure it is in the correct folder layout.
  1. Copy it into the otrs-config volume through the running container:
- ```
- docker cp ./skin-folder/* otrs-fcgi:/data/custom-agent-skin/
- or
- docker cp ./skin-folder/* otrs-fcgi:/data/custom-customer-skin/
- ```
+
+    ```
+    docker cp ./skin-folder/* otrs-fcgi:/data/custom-agent-skin/
+    or
+    docker cp ./skin-folder/* otrs-fcgi:/data/custom-customer-skin/
+    ```
+
  1. Go into OTRS' sysconfig and make sure the 'custom-agent-skin' or 'custom-customer-skin' is enabled.
  1. Activate the skin in your preferences, and if it works, set it as the default in sysconfig.
 
@@ -69,11 +75,14 @@ If you have OTRS 6 running locally, then migrating to a containerized setup is s
  1. Start the postgres or mariadb docker-compose deployment as appropriate.
  1. Restore your database into the database container using the appropriate method (pg_restore, mysql client, etc).
  1. Modify your config.pm to point to the database container and copy it into the otrs-config volume:
- ```
- docker cp ./Config.pm otrs-fcgi:/data/Config.pm
- ```
+
+    ```
+    docker cp ./Config.pm otrs-fcgi:/data/Config.pm
+    ```
+
  1. Try the web interface and see your configuration comes up. If not, restart the environment and try again:
- ```
- docker-compose down
- docker-compose up -d
- ```
+
+    ```
+    docker-compose down
+    docker-compose up -d
+    ```
